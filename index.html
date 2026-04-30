@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PetPalace — Curated Care for Every Kingdom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+    ============================================================ */
+    :root {
+      --surface-base:   #F9F9F9;
+      --surface-raised: #FFFFFF;
+      --ink:            #2C2C2C;
+      --ink-mid:        #5A5A5A;
+      --ink-light:      #9A9A9A;
+      --accent-sand:    #C8B89A;
+
+      /* Dogs — Terracotta & Deep Navy */
+      --dog-p: #C96A3D; --dog-s: #1A2744; --dog-bg: #FFF3EE; --dog-sh: rgba(201,106,61,.28);
+      /* Cats — Lavender & Sage */
+      --cat-p: #9B8CC8; --cat-s: #7A9E7E; --cat-bg: #F5F0FF; --cat-sh: rgba(155,140,200,.28);
+      /* Fish — Teal & Coral */
+      --fish-p: #1B7B8A; --fish-s: #FF7B5E; --fish-bg: #E8F9FB; --fish-sh: rgba(27,123,138,.28);
+      /* Reptiles — Ochre & Terracotta */
+      --rep-p: #C8901A; --rep-s: #B85C38; --rep-bg: #FFF8E4; --rep-sh: rgba(200,144,26,.28);
+      /* Amphibians — Lime & Pond Brown */
+      --amp-p: #5FA823; --amp-s: #7A5C30; --amp-bg: #EDFAD5; --amp-sh: rgba(95,168,35,.28);
+      /* Birds — Sky Blue & Sunshine Yellow */
+      --bir-p: #4CA3D4; --bir-s: #F0C030; --bir-bg: #EAF5FF; --bir-sh: rgba(76,163,212,.28);
+
+      --font-d: 'Playfair Display', Georgia, serif;
+      --font-b: 'Inter', -apple-system, sans-serif;
+      --max-w: 1400px;
+      --sp: 100px 24px;
+      --r-card: 24px;
+      --r-pill: 9999px;
+      --sh-sm: 0 2px 10px rgba(0,0,0,.06);
+      --sh-md: 0 8px 28px rgba(0,0,0,.09);
+      --sh-lg: 0 18px 52px rgba(0,0,0,.13);
+      --tr: all .3s cubic-bezier(.25,.46,.45,.94);
+    }
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-b); background: var(--surface-base); color: var(--ink); line-height: 1.6; overflow-x: hidden; }
+    img  { max-width: 100%; display: block; }
+    a    { text-decoration: none; color: inherit; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    .sec-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--ink-light); display: block; margin-bottom: 10px;
+    }
+    .sec-title {
+      font-family: var(--font-d); font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700; line-height: 1.15; margin-bottom: 14px;
+    }
+    .sec-sub { font-size: 1.05rem; color: var(--ink-mid); max-width: 560px; line-height: 1.7; }
+
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: .10s; }
+    .d2 { transition-delay: .20s; }
+    .d3 { transition-delay: .30s; }
+    .d4 { transition-delay: .40s; }
+    .d5 { transition-delay: .50s; }
+    .d6 { transition-delay: .60s; }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    .nav {
+      position: fixed; inset: 0 0 auto; z-index: 1000;
+      padding: 14px 24px; transition: var(--tr);
+    }
+    .nav.scrolled {
+      background: rgba(255,255,255,.94); backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(200,184,154,.2); box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    }
+    .nav-in {
+      max-width: var(--max-w); margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo-icon { width: 36px; height: 36px; flex-shrink: 0; }
+    .logo-text { font-family: var(--font-d); font-size: 1.35rem; font-weight: 700; color: var(--ink); }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a { font-size: .875rem; font-weight: 500; color: var(--ink-mid); transition: color .2s; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta {
+      background: var(--ink); color: #fff !important;
+      padding: 10px 20px; border-radius: var(--r-pill);
+      font-weight: 600 !important; transition: var(--tr) !important;
+    }
+    .nav-cta:hover { background: var(--dog-p) !important; transform: translateY(-1px); }
+    .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .burger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; transition: var(--tr); }
+
+    /* Mobile menu */
+    .m-menu {
+      display: none; position: fixed; inset: 0; background: rgba(255,255,255,.97);
+      backdrop-filter: blur(20px); z-index: 999;
+      flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+    }
+    .m-menu.open { display: flex; }
+    .m-menu a { font-family: var(--font-d); font-size: 2rem; font-weight: 700; }
+    .m-close { position: absolute; top: 24px; right: 24px; font-size: 1.6rem; cursor: pointer; background: none; border: none; color: var(--ink); }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; padding-top: 80px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      animation: bgCycle 14s ease-in-out infinite;
+    }
+    @keyframes bgCycle {
+      0%   { background: linear-gradient(135deg, #FFF3EE 0%, #F9F9F9 50%, #EAF5FF 100%); }
+      16%  { background: linear-gradient(135deg, #F5F0FF 0%, #F9F9F9 50%, #EDFAD5 100%); }
+      32%  { background: linear-gradient(135deg, #E8F9FB 0%, #F9F9F9 50%, #FFF8E4 100%); }
+      48%  { background: linear-gradient(135deg, #FFF8E4 0%, #F9F9F9 50%, #F5F0FF 100%); }
+      64%  { background: linear-gradient(135deg, #EDFAD5 0%, #F9F9F9 50%, #E8F9FB 100%); }
+      80%  { background: linear-gradient(135deg, #EAF5FF 0%, #F9F9F9 50%, #FFF3EE 100%); }
+      100% { background: linear-gradient(135deg, #FFF3EE 0%, #F9F9F9 50%, #EAF5FF 100%); }
+    }
+    .hero-orbs { position: absolute; inset: 0; pointer-events: none; }
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(70px); opacity: .22;
+      animation: orb-float linear infinite;
+    }
+    .o1 { width:420px; height:420px; background:var(--dog-p); top:-120px; left:-100px; animation-duration:22s; }
+    .o2 { width:320px; height:320px; background:var(--cat-p); top:45%; right:-80px; animation-duration:28s; animation-delay:-6s; }
+    .o3 { width:360px; height:360px; background:var(--fish-p); bottom:-60px; left:28%; animation-duration:19s; animation-delay:-11s; }
+    .o4 { width:220px; height:220px; background:var(--bir-s); top:18%; left:42%; animation-duration:24s; animation-delay:-3s; }
+    @keyframes orb-float {
+      0%   { transform: translate(0,0) scale(1); }
+      33%  { transform: translate(28px,-18px) scale(1.04); }
+      66%  { transform: translate(-18px,14px) scale(.97); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+    .hero-body {
+      position: relative; z-index: 2; text-align: center;
+      padding: 60px 24px; max-width: 820px; margin: 0 auto;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.85); backdrop-filter: blur(10px);
+      border: 1px solid rgba(200,184,154,.4); border-radius: var(--r-pill);
+      padding: 6px 18px; font-size: .78rem; font-weight: 700;
+      letter-spacing: .08em; color: var(--ink-mid); text-transform: uppercase;
+      margin-bottom: 28px;
+      animation: fadeUp .8s ease forwards;
+    }
+    .eyebrow-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--dog-p);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.5)} }
+    .hero-h1 {
+      font-family: var(--font-d); font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 700; line-height: 1.08; letter-spacing: -.02em;
+      color: var(--ink); margin-bottom: 22px;
+      animation: fadeUp .9s ease .2s forwards; opacity: 0;
+    }
+    .hero-h1 em { font-style: italic; color: var(--dog-p); }
+    .hero-tag {
+      font-size: clamp(1rem, 2vw, 1.2rem); color: var(--ink-mid);
+      max-width: 520px; margin: 0 auto 40px; line-height: 1.7;
+      animation: fadeUp .9s ease .4s forwards; opacity: 0;
+    }
+    .hero-btns {
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; flex-wrap: wrap;
+      animation: fadeUp .9s ease .6s forwards; opacity: 0;
+    }
+    .btn-p {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--ink); color: #fff; font-family: var(--font-b);
+      font-size: .95rem; font-weight: 700; padding: 15px 30px;
+      border-radius: var(--r-pill); cursor: pointer; transition: var(--tr);
+      border: none;
+    }
+    .btn-p:hover { background: var(--dog-p); transform: translateY(-2px); box-shadow: 0 8px 24px var(--dog-sh); }
+    .btn-s {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.9); backdrop-filter: blur(10px);
+      color: var(--ink); font-family: var(--font-b);
+      font-size: .95rem; font-weight: 500; padding: 15px 28px;
+      border-radius: var(--r-pill); cursor: pointer; transition: var(--tr);
+      border: 1px solid rgba(44,44,44,.12);
+    }
+    .btn-s:hover { background: #fff; transform: translateY(-2px); box-shadow: var(--sh-md); }
+    .hero-badges {
+      display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+      margin-top: 56px;
+      animation: fadeUp .9s ease .8s forwards; opacity: 0;
+    }
+    .hbadge {
+      display: flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,.85); backdrop-filter: blur(10px);
+      border: 1px solid rgba(0,0,0,.06); border-radius: var(--r-pill);
+      padding: 7px 15px; font-size: .8rem; font-weight: 600;
+      cursor: pointer; transition: var(--tr);
+    }
+    .hbadge:hover { transform: translateY(-3px); box-shadow: var(--sh-md); }
+    .hbdot { width: 8px; height: 8px; border-radius: 50%; }
+    /* Scroll cue */
+    .scroll-cue {
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 7px;
+      animation: fadeUp .9s ease 1.2s forwards; opacity: 0;
+    }
+    .scroll-cue span { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-light); }
+    .scroll-line {
+      width: 1px; height: 30px;
+      background: linear-gradient(to bottom, var(--ink-light), transparent);
+      animation: sline 2s ease-in-out infinite;
+    }
+    @keyframes sline {
+      0%   { transform: scaleY(0); transform-origin: top; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      51%  { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(22px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ============================================================
+       STATS BAR
+    ============================================================ */
+    .stats { background: var(--ink); padding: 26px 24px; }
+    .stats-in {
+      max-width: var(--max-w); margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-around; gap: 24px; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-n { font-family: var(--font-d); font-size: 2rem; font-weight: 700; color: #fff; display: block; }
+    .stat-l { font-size: .78rem; color: rgba(255,255,255,.5); letter-spacing: .05em; }
+    .stat-div { width: 1px; height: 38px; background: rgba(255,255,255,.13); }
+
+    /* ============================================================
+       CATEGORY HUB
+    ============================================================ */
+    .categories { padding: var(--sp); background: var(--surface-base); }
+    .sec-hd { text-align: center; margin-bottom: 56px; }
+    .cat-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+      max-width: var(--max-w); margin: 0 auto;
+    }
+    .ccard {
+      border-radius: var(--r-card); padding: 38px 30px;
+      cursor: pointer; transition: opacity .6s ease, transform .65s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
+      position: relative; overflow: hidden; border: 1px solid transparent;
+      opacity: 0; transform: scale(.96);
+    }
+    .ccard.in { opacity: 1; transform: scale(1); }
+    .ccard:hover { transform: scale(1.02) translateY(-5px); }
+    .cdog { background:var(--dog-bg); border-color:rgba(201,106,61,.14); }
+    .ccat { background:var(--cat-bg); border-color:rgba(155,140,200,.14); }
+    .cfish{ background:var(--fish-bg);border-color:rgba(27,123,138,.14); }
+    .crep { background:var(--rep-bg); border-color:rgba(200,144,26,.14); }
+    .camp { background:var(--amp-bg); border-color:rgba(95,168,35,.14); }
+    .cbir { background:var(--bir-bg); border-color:rgba(76,163,212,.14); }
+    .cdog:hover  { box-shadow: 0 18px 44px var(--dog-sh); }
+    .ccat:hover  { box-shadow: 0 18px 44px var(--cat-sh); }
+    .cfish:hover { box-shadow: 0 18px 44px var(--fish-sh); }
+    .crep:hover  { box-shadow: 0 18px 44px var(--rep-sh); }
+    .camp:hover  { box-shadow: 0 18px 44px var(--amp-sh); }
+    .cbir:hover  { box-shadow: 0 18px 44px var(--bir-sh); }
+
+    .cicon {
+      width: 68px; height: 68px; border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin-bottom: 18px;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .ccard:hover .cicon { transform: rotate(-6deg) scale(1.12); }
+    .cdog .cicon  { background:rgba(201,106,61,.14); }
+    .ccat .cicon  { background:rgba(155,140,200,.14); }
+    .cfish .cicon { background:rgba(27,123,138,.14); }
+    .crep .cicon  { background:rgba(200,144,26,.14); }
+    .camp .cicon  { background:rgba(95,168,35,.14); }
+    .cbir .cicon  { background:rgba(76,163,212,.14); }
+
+    .csub { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; }
+    .cdog .csub  { color:var(--dog-p); } .ccat .csub { color:var(--cat-p); }
+    .cfish .csub { color:var(--fish-s); } .crep .csub { color:var(--rep-p); }
+    .camp .csub  { color:var(--amp-p); } .cbir .csub { color:var(--bir-p); }
+
+    .cname { font-family: var(--font-d); font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; }
+    .cdog .cname  { color:var(--dog-s); } .ccat .cname { color:var(--cat-s); }
+    .cfish .cname { color:var(--fish-p); } .crep .cname { color:var(--rep-s); }
+    .camp .cname  { color:var(--amp-s); } .cbir .cname { color:var(--bir-p); }
+
+    .cdesc { font-size: .88rem; color: var(--ink-mid); line-height: 1.65; margin-bottom: 18px; }
+    .clink { font-size: .83rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; transition: gap .2s; }
+    .cdog .clink  { color:var(--dog-p); } .ccat .clink { color:var(--cat-p); }
+    .cfish .clink { color:var(--fish-p); } .crep .clink { color:var(--rep-p); }
+    .camp .clink  { color:var(--amp-p); } .cbir .clink { color:var(--bir-p); }
+    .ccard:hover .clink { gap: 12px; }
+
+    .cnum {
+      position: absolute; bottom: -12px; right: 18px;
+      font-family: var(--font-d); font-size: 7rem; font-weight: 700;
+      opacity: .05; color: var(--ink); pointer-events: none; line-height: 1;
+    }
+
+    /* ============================================================
+       PRODUCTS
+    ============================================================ */
+    .products { padding: var(--sp); background: var(--surface-raised); overflow: hidden; }
+    .prod-hd {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      max-width: var(--max-w); margin: 0 auto 36px; flex-wrap: wrap; gap: 16px;
+    }
+    .prod-scroll {
+      display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; padding: 10px 24px 24px;
+      scrollbar-width: none; max-width: 100vw;
+    }
+    .prod-scroll::-webkit-scrollbar { display: none; }
+    .pcard {
+      flex: 0 0 268px; background: var(--surface-base);
+      border-radius: var(--r-card); border: 1px solid rgba(0,0,0,.05);
+      overflow: hidden; scroll-snap-align: start;
+      cursor: pointer; transition: var(--tr);
+    }
+    .pcard:hover { transform: translateY(-8px); }
+    .pimg {
+      height: 210px; display: flex; align-items: center;
+      justify-content: center; font-size: 5rem; position: relative;
+    }
+    .pbadge {
+      position: absolute; top: 12px; left: 12px;
+      font-size: .68rem; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; padding: 3px 10px;
+      border-radius: var(--r-pill); color: #fff;
+    }
+    .bd { background:var(--dog-p); } .bc { background:var(--cat-p); }
+    .bf { background:var(--fish-p); } .br { background:var(--rep-p); }
+    .ba { background:var(--amp-p); } .bb { background:var(--bir-p); }
+
+    .pinfo { padding: 18px; }
+    .pname { font-family: var(--font-d); font-size: 1.02rem; font-weight: 600; margin-bottom: 4px; }
+    .pmeta { font-size: .8rem; color: var(--ink-light); margin-bottom: 12px; }
+    .pfooter { display: flex; align-items: center; justify-content: space-between; }
+    .pprice { font-size: 1.1rem; font-weight: 700; }
+    .padd {
+      width: 34px; height: 34px; border-radius: 50%; background: var(--ink);
+      color: #fff; border: none; cursor: pointer; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--tr);
+    }
+    .padd:hover { background: var(--dog-p); transform: scale(1.15); }
+
+    .car-nav { display: flex; gap: 10px; max-width: var(--max-w); margin: 18px auto 0; padding: 0 24px; justify-content: flex-end; }
+    .car-btn {
+      width: 42px; height: 42px; border-radius: 50%;
+      border: 1.5px solid var(--ink); background: transparent;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: .95rem; transition: var(--tr); color: var(--ink);
+    }
+    .car-btn:hover { background: var(--ink); color: #fff; }
+
+    /* ============================================================
+       SERVICES
+    ============================================================ */
+    .services { padding: var(--sp); background: var(--surface-base); }
+    .srv-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; max-width: var(--max-w); margin: 0 auto; }
+    .scard {
+      background: var(--surface-raised); border-radius: var(--r-card);
+      padding: 38px 30px; border: 1px solid rgba(0,0,0,.05);
+      box-shadow: var(--sh-sm); transition: var(--tr);
+    }
+    .scard:hover { transform: translateY(-6px); box-shadow: var(--sh-lg); }
+    .sicon { font-size: 2.4rem; margin-bottom: 18px; }
+    .stitle { font-family: var(--font-d); font-size: 1.4rem; font-weight: 600; margin-bottom: 10px; }
+    .sdesc { font-size: .88rem; color: var(--ink-mid); line-height: 1.7; margin-bottom: 20px; }
+    .sfeat { list-style: none; margin-bottom: 24px; }
+    .sfeat li {
+      font-size: .83rem; color: var(--ink-mid); padding: 5px 0;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid rgba(0,0,0,.04);
+    }
+    .sfeat li::before { content:'✓'; color:var(--amp-p); font-weight:700; font-size:.72rem; }
+    .slink { font-size: .88rem; font-weight: 600; color: var(--ink); display: inline-flex; align-items: center; gap: 6px; transition: gap .2s; }
+    .scard:hover .slink { gap: 11px; }
+
+    /* ============================================================
+       ADOPTION SPOTLIGHT
+    ============================================================ */
+    .adoption {
+      padding: var(--sp); background: var(--ink); color: #fff;
+      position: relative; overflow: hidden;
+    }
+    .adoption::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(ellipse at 72% 50%, rgba(201,106,61,.22) 0%, transparent 55%),
+                  radial-gradient(ellipse at 20% 80%, rgba(76,163,212,.16) 0%, transparent 48%);
+    }
+    .adp-in {
+      max-width: var(--max-w); margin: 0 auto; position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
+    }
+    .adp-label { color: rgba(255,255,255,.45); }
+    .adp-title { font-family: var(--font-d); font-size: clamp(2rem,4vw,3rem); font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 18px; }
+    .adp-title em { font-style: italic; color: var(--dog-p); }
+    .adp-text { color: rgba(255,255,255,.65); line-height: 1.7; margin-bottom: 30px; }
+    .adp-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .apet {
+      background: rgba(255,255,255,.07); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.1); border-radius: var(--r-card);
+      padding: 18px 14px; text-align: center; cursor: pointer; transition: var(--tr);
+    }
+    .apet:hover { background: rgba(255,255,255,.13); transform: translateY(-4px); }
+    .apet-em { font-size: 2.4rem; display: block; margin-bottom: 10px; }
+    .apet-name { font-family: var(--font-d); font-size: .95rem; font-weight: 600; color: #fff; margin-bottom: 3px; }
+    .apet-info { font-size: .72rem; color: rgba(255,255,255,.45); margin-bottom: 10px; }
+    .apet-tag { display: inline-block; font-size: .68rem; font-weight: 700; padding: 3px 10px; border-radius: var(--r-pill); background: rgba(95,168,35,.3); color: #9ee04d; }
+
+    /* ============================================================
+       BLOG
+    ============================================================ */
+    .blog { padding: var(--sp); background: var(--surface-raised); }
+    .blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; max-width: var(--max-w); margin: 0 auto; }
+    .bcard {
+      border-radius: var(--r-card); overflow: hidden;
+      border: 1px solid rgba(0,0,0,.05); background: var(--surface-base);
+      cursor: pointer; transition: var(--tr);
+    }
+    .bcard:hover { transform: translateY(-6px); box-shadow: var(--sh-lg); }
+    .bimg { height: 196px; display: flex; align-items: center; justify-content: center; font-size: 5rem; position: relative; }
+    .btag {
+      position: absolute; bottom: 12px; left: 12px;
+      font-size: .68rem; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; padding: 3px 10px;
+      border-radius: var(--r-pill); color: #fff;
+    }
+    .bbody { padding: 22px; }
+    .brt { font-size: .74rem; color: var(--ink-light); margin-bottom: 8px; }
+    .btitle { font-family: var(--font-d); font-size: 1.12rem; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+    .bexcerpt { font-size: .85rem; color: var(--ink-mid); line-height: 1.6; margin-bottom: 18px; }
+    .bauthor { display: flex; align-items: center; gap: 10px; }
+    .bavatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .baname { font-size: .8rem; font-weight: 600; }
+
+    /* ============================================================
+       TESTIMONIALS
+    ============================================================ */
+    .testimonials { padding: var(--sp); background: var(--surface-base); overflow: hidden; }
+    .test-track {
+      display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; padding: 10px 24px 22px;
+      scrollbar-width: none; max-width: 100vw;
+    }
+    .test-track::-webkit-scrollbar { display: none; }
+    .tcard {
+      flex: 0 0 350px; background: var(--surface-raised);
+      border-radius: var(--r-card); padding: 30px;
+      border: 1px solid rgba(0,0,0,.05); scroll-snap-align: start;
+      box-shadow: var(--sh-sm);
+    }
+    .tstars { display: flex; gap: 2px; margin-bottom: 14px; font-size: .88rem; color: var(--bir-s); }
+    .tquote { font-family: var(--font-d); font-size: 1.02rem; font-style: italic; line-height: 1.65; margin-bottom: 22px; }
+    .tauthor { display: flex; align-items: center; gap: 12px; }
+    .tavatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .tname { font-weight: 600; font-size: .88rem; margin-bottom: 2px; }
+    .tpet { font-size: .76rem; color: var(--ink-light); display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .tptag { font-size: .65rem; font-weight: 700; padding: 2px 8px; border-radius: var(--r-pill); color: #fff; }
+
+    /* ============================================================
+       NEWSLETTER
+    ============================================================ */
+    .newsletter { padding: 80px 24px; background: linear-gradient(135deg, var(--dog-bg) 0%, var(--bir-bg) 100%); }
+    .nl-in { max-width: 580px; margin: 0 auto; text-align: center; }
+    .nl-title { font-family: var(--font-d); font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 700; margin-bottom: 10px; }
+    .nl-sub { color: var(--ink-mid); margin-bottom: 28px; }
+    .nl-form { display: flex; gap: 10px; max-width: 430px; margin: 0 auto; }
+    .nl-input {
+      flex: 1; padding: 13px 18px; border-radius: var(--r-pill);
+      border: 1.5px solid rgba(0,0,0,.12); background: rgba(255,255,255,.9);
+      font-family: var(--font-b); font-size: .9rem; color: var(--ink); outline: none; transition: border-color .2s;
+    }
+    .nl-input:focus { border-color: var(--dog-p); }
+    .nl-btn {
+      background: var(--ink); color: #fff; border: none;
+      padding: 13px 22px; border-radius: var(--r-pill);
+      font-family: var(--font-b); font-size: .88rem; font-weight: 700;
+      cursor: pointer; transition: var(--tr); white-space: nowrap;
+    }
+    .nl-btn:hover { background: var(--dog-p); }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .footer { background: var(--ink); color: rgba(255,255,255,.7); padding: 56px 24px 28px; }
+    .foot-in { max-width: var(--max-w); margin: 0 auto; }
+    .foot-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 44px; margin-bottom: 44px; }
+    .foot-logo { font-family: var(--font-d); font-size: 1.55rem; font-weight: 700; color: #fff; margin-bottom: 14px; }
+    .foot-tag { font-size: .85rem; line-height: 1.7; color: rgba(255,255,255,.45); margin-bottom: 22px; }
+    .socials { display: flex; gap: 8px; }
+    .sbtn {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: rgba(255,255,255,.07); display: flex; align-items: center; justify-content: center;
+      font-size: .95rem; cursor: pointer; border: 1px solid rgba(255,255,255,.1); transition: var(--tr);
+    }
+    .sbtn:hover { background: var(--dog-p); border-color: var(--dog-p); }
+    .foot-col h4 { font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 18px; }
+    .foot-col ul { list-style: none; }
+    .foot-col ul li { margin-bottom: 9px; }
+    .foot-col ul li a { font-size: .85rem; color: rgba(255,255,255,.55); transition: color .2s; }
+    .foot-col ul li a:hover { color: #fff; }
+    .foot-bot {
+      border-top: 1px solid rgba(255,255,255,.08); padding-top: 22px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+    }
+    .foot-copy { font-size: .78rem; color: rgba(255,255,255,.3); }
+    .class-dots { display: flex; gap: 6px; }
+    .cdot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      .cat-grid { grid-template-columns: repeat(2,1fr); }
+      .foot-top { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .adp-in   { grid-template-columns: 1fr; gap: 36px; }
+    }
+    @media (max-width: 768px) {
+      :root { --sp: 64px 20px; }
+      .nav-links { display: none; }
+      .burger { display: flex; }
+      .cat-grid {
+        display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch; gap: 14px; padding-bottom: 10px;
+      }
+      .ccard { flex: 0 0 250px; scroll-snap-align: start; }
+      .srv-grid { grid-template-columns: 1fr; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .adp-grid { grid-template-columns: repeat(2,1fr); }
+      .foot-top { grid-template-columns: 1fr; }
+      .nl-form { flex-direction: column; }
+      .stat-div { display: none; }
+    }
+    @media (max-width: 480px) {
+      .adp-grid { grid-template-columns: 1fr; }
+      .hero-h1 { font-size: 2.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================
+       NAVIGATION
+  ====================================================== -->
+  <nav class="nav" id="nav">
+    <div class="nav-in">
+      <div class="logo">
+        <!-- Six-circle palace logo mark -->
+        <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="10" r="6" fill="#C96A3D" opacity=".9"/>
+          <circle cx="26" cy="14" r="6" fill="#9B8CC8" opacity=".9"/>
+          <circle cx="26" cy="23" r="6" fill="#1B7B8A" opacity=".9"/>
+          <circle cx="18" cy="27" r="6" fill="#C8901A" opacity=".9"/>
+          <circle cx="10" cy="23" r="6" fill="#5FA823" opacity=".9"/>
+          <circle cx="10" cy="14" r="6" fill="#4CA3D4" opacity=".9"/>
+          <circle cx="18" cy="18" r="5" fill="white"/>
+        </svg>
+        <span class="logo-text">PetPalace</span>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="#categories">Shop by Pet</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#blog">Care Guides</a></li>
+        <li><a href="#testimonials">Stories</a></li>
+        <li><a href="#contact" class="nav-cta">Get Started</a></li>
+      </ul>
+
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile overlay menu -->
+  <div class="m-menu" id="mMenu">
+    <button class="m-close" id="mClose">✕</button>
+    <a href="#categories" onclick="closeMobile()">Shop by Pet</a>
+    <a href="#products"   onclick="closeMobile()">Products</a>
+    <a href="#services"   onclick="closeMobile()">Services</a>
+    <a href="#blog"       onclick="closeMobile()">Care Guides</a>
+    <a href="#contact"    onclick="closeMobile()">Get Started</a>
+  </div>
+
+  <!-- ======================================================
+       HERO
+  ====================================================== -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-orbs">
+      <div class="orb o1"></div>
+      <div class="orb o2"></div>
+      <div class="orb o3"></div>
+      <div class="orb o4"></div>
+    </div>
+
+    <div class="hero-body">
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        Beyond Cats &amp; Dogs — All 6 Kingdoms
+      </div>
+
+      <h1 class="hero-h1">
+        Curated Care for<br><em>Every Kingdom.</em>
+      </h1>
+
+      <p class="hero-tag">
+        The only boutique where every creature — from your loyal canine to your vibrant betta — gets exactly what they deserve.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#categories" class="btn-p">
+          Shop by Pet Type
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#services" class="btn-s">Book a Service</a>
+      </div>
+
+      <div class="hero-badges">
+        <div class="hbadge"><span class="hbdot" style="background:var(--dog-p)"></span>🐕 Canines</div>
+        <div class="hbadge"><span class="hbdot" style="background:var(--cat-p)"></span>🐈 Felines</div>
+        <div class="hbadge"><span class="hbdot" style="background:var(--fish-p)"></span>🐠 Aquatics</div>
+        <div class="hbadge"><span class="hbdot" style="background:var(--rep-p)"></span>🦎 Reptiles</div>
+        <div class="hbadge"><span class="hbdot" style="background:var(--amp-p)"></span>🐸 Amphibians</div>
+        <div class="hbadge"><span class="hbdot" style="background:var(--bir-p)"></span>🦜 Avians</div>
+      </div>
+    </div>
+
+    <div class="scroll-cue">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       STATS BAR
+  ====================================================== -->
+  <div class="stats">
+    <div class="stats-in">
+      <div class="stat"><span class="stat-n" id="s0">6</span><span class="stat-l">Animal Kingdoms</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n" id="s1">2,400+</span><span class="stat-l">Curated Products</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n" id="s2">50K+</span><span class="stat-l">Happy Pet Families</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n">4.9★</span><span class="stat-l">Average Rating</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-n">1-Day</span><span class="stat-l">Express Delivery</span></div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       CATEGORY HUB — THE SIX KINGDOMS
+  ====================================================== -->
+  <section class="categories" id="categories">
+    <div class="container">
+      <div class="sec-hd reveal">
+        <span class="sec-label">The Six Kingdoms</span>
+        <h2 class="sec-title">Find Your Flock.</h2>
+        <p class="sec-sub" style="margin:0 auto">Every kingdom gets its own curated world — products, care guides, and services tailored to your companion's exact needs.</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="cat-grid">
+
+        <div class="ccard cdog reveal d1">
+          <div class="cicon">🐕</div>
+          <p class="csub">Canines</p>
+          <h3 class="cname">Dogs</h3>
+          <p class="cdesc">From pack walks to premium beds — everything your loyal companion needs to thrive every single day.</p>
+          <a href="#products" class="clink">Explore Canines →</a>
+          <span class="cnum">01</span>
+        </div>
+
+        <div class="ccard ccat reveal d2">
+          <div class="cicon">🐈</div>
+          <p class="csub">Felines</p>
+          <h3 class="cname">Cats</h3>
+          <p class="cdesc">Serene window perches, feather wands, and nutrition crafted for curious, regal souls.</p>
+          <a href="#products" class="clink">Explore Felines →</a>
+          <span class="cnum">02</span>
+        </div>
+
+        <div class="ccard cfish reveal d3">
+          <div class="cicon">🐠</div>
+          <p class="csub">Aquatics</p>
+          <h3 class="cname">Fish</h3>
+          <p class="cdesc">Aquascaping kits, nano tanks, and water chemistry essentials for fluid, vibrant habitats.</p>
+          <a href="#products" class="clink">Explore Aquatics →</a>
+          <span class="cnum">03</span>
+        </div>
+
+        <div class="ccard crep reveal d4">
+          <div class="cicon">🦎</div>
+          <p class="csub">Herpetology</p>
+          <h3 class="cname">Reptiles</h3>
+          <p class="cdesc">Scale &amp; Tail Care — heat lamps, textured substrates, and arid habitat décor.</p>
+          <a href="#products" class="clink">Explore Reptiles →</a>
+          <span class="cnum">04</span>
+        </div>
+
+        <div class="ccard camp reveal d5">
+          <div class="cicon">🐸</div>
+          <p class="csub">Herpetology</p>
+          <h3 class="cname">Amphibians</h3>
+          <p class="cdesc">Humid bioactive habitats, misting systems, and vivacious live-plant setups.</p>
+          <a href="#products" class="clink">Explore Amphibians →</a>
+          <span class="cnum">05</span>
+        </div>
+
+        <div class="ccard cbir reveal d6">
+          <div class="cicon">🦜</div>
+          <p class="csub">Avians</p>
+          <h3 class="cname">Birds</h3>
+          <p class="cdesc">Natural wooden perches, foraging puzzles, and airy aviaries for chirpy companions.</p>
+          <a href="#products" class="clink">Explore Avians →</a>
+          <span class="cnum">06</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       FEATURED PRODUCTS
+  ====================================================== -->
+  <section class="products" id="products">
+    <div class="prod-hd">
+      <div class="reveal">
+        <span class="sec-label">Best Sellers</span>
+        <h2 class="sec-title">Loved by Every Kingdom.</h2>
+      </div>
+      <div class="car-nav">
+        <button class="car-btn" id="pPrev" aria-label="Previous">←</button>
+        <button class="car-btn" id="pNext" aria-label="Next">→</button>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="prod-scroll" id="pCarousel">
+
+        <div class="pcard">
+          <div class="pimg" style="background:var(--dog-bg)">🦮<span class="pbadge bd">Dog</span></div>
+          <div class="pinfo">
+            <h4 class="pname">Artisan Leather Collar</h4>
+            <p class="pmeta">Canine · Premium Accessories</p>
+            <div class="pfooter"><span class="pprice">$42.00</span><button class="padd">+</button></div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pimg" style="background:var(--cat-bg)">🐱<span class="pbadge bc">Cat</span></div>
+          <div class="pinfo">
+            <h4 class="pname">Velvet Window Perch</h4>
+            <p class="pmeta">Feline · Habitats &amp; Comfort</p>
+            <div class="pfooter"><span class="pprice">$68.00</span><button class="padd">+</button></div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pimg" style="background:var(--fish-bg)">🐠<span class="pbadge bf">Fish</span></div>
+          <div class="pinfo">
+            <h4 class="pname">Nano Aquascape Kit</h4>
+            <p class="pmeta">Aquatics · Habitat Essentials</p>
+            <div class="pfooter"><span class="pprice">$124.00</span><button class="padd">+</button></div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pimg" style="background:var(--bir-bg)">🦜<span class="pbadge bb">Bird</span></div>
+          <div class="pinfo">
+            <h4 class="pname">Natural Manzanita Perch</h4>
+            <p class="pmeta">Avian · Habitat &amp; Enrichment</p>
+            <div class="pfooter"><span class="pprice">$36.00</span><button class="padd">+</button></div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pimg" style="background:var(--rep-bg)">🦎<span class="pbadge br">Reptile</span></div>
+          <div class="pinfo">
+            <h4 class="pname">Desert Basking Stone</h4>
+            <p class="pmeta">Reptile · Habitat Décor</p>
+            <div class="pfooter"><span class="pprice">$29.00</span><button class="padd">+</button></div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pimg" style="background:var(--amp-bg)">🐸<span class="pbadge ba">Amphibian</span></div>
+          <div class="pinfo">
+            <h4 class="pname">Bioactive Misting System</h4>
+            <p class="pmeta">Amphibian · Habitat Tech</p>
+            <div class="pfooter"><span class="pprice">$89.00</span><button class="padd">+</button></div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pimg" style="background:var(--dog-bg)">🐾<span class="pbadge bd">Dog</span></div>
+          <div class="pinfo">
+            <h4 class="pname">Orthopedic Memory Bed</h4>
+            <p class="pmeta">Canine · Rest &amp; Recovery</p>
+            <div class="pfooter"><span class="pprice">$115.00</span><button class="padd">+</button></div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pimg" style="background:var(--cat-bg)">🎀<span class="pbadge bc">Cat</span></div>
+          <div class="pinfo">
+            <h4 class="pname">Feather Wand Set</h4>
+            <p class="pmeta">Feline · Play &amp; Enrichment</p>
+            <div class="pfooter"><span class="pprice">$22.00</span><button class="padd">+</button></div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pimg" style="background:var(--bir-bg)">🐦<span class="pbadge bb">Bird</span></div>
+          <div class="pinfo">
+            <h4 class="pname">Foraging Puzzle Tower</h4>
+            <p class="pmeta">Avian · Mental Enrichment</p>
+            <div class="pfooter"><span class="pprice">$48.00</span><button class="padd">+</button></div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pimg" style="background:var(--rep-bg)">🌡️<span class="pbadge br">Reptile</span></div>
+          <div class="pinfo">
+            <h4 class="pname">UVB Habitat Lamp Pro</h4>
+            <p class="pmeta">Reptile · Lighting &amp; Heat</p>
+            <div class="pfooter"><span class="pprice">$62.00</span><button class="padd">+</button></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       SERVICES
+  ====================================================== -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="sec-hd reveal">
+        <span class="sec-label">Pet Care Studio</span>
+        <h2 class="sec-title">Caring Beyond the Purchase.</h2>
+        <p class="sec-sub" style="margin:0 auto">Expert services designed for every creature. Book with ease, care with confidence.</p>
+      </div>
+      <div class="srv-grid">
+
+        <div class="scard reveal d1">
+          <div class="sicon">✂️</div>
+          <h3 class="stitle">Palace Grooming</h3>
+          <p class="sdesc">From breed-specific cuts to scale polishing — our expert groomers are trained for all 6 kingdoms.</p>
+          <ul class="sfeat">
+            <li>Dog &amp; Cat Styling</li>
+            <li>Bird Feather Conditioning</li>
+            <li>Reptile &amp; Amphibian Spa</li>
+            <li>Post-groom Aromatherapy</li>
+          </ul>
+          <a href="#contact" class="slink">Book a session →</a>
+        </div>
+
+        <div class="scard reveal d2">
+          <div class="sicon">💊</div>
+          <h3 class="stitle">Vet Telehealth</h3>
+          <p class="sdesc">Connect with exotic and domestic vets in minutes. Available for every species in our catalogue.</p>
+          <ul class="sfeat">
+            <li>Licensed Exotic Vets</li>
+            <li>Same-day Consultations</li>
+            <li>Prescription Refills</li>
+            <li>Species-Specific Advice</li>
+          </ul>
+          <a href="#contact" class="slink">Start a consultation →</a>
+        </div>
+
+        <div class="scard reveal d3">
+          <div class="sicon">🥗</div>
+          <h3 class="stitle">Nutrition Consult</h3>
+          <p class="sdesc">Bespoke diet plans crafted by animal nutritionists. Because "one size fits all" is not how nature works.</p>
+          <ul class="sfeat">
+            <li>Custom Diet Blueprints</li>
+            <li>Supplement Guidance</li>
+            <li>Feeding Schedule Plans</li>
+            <li>Life-stage Nutrition</li>
+          </ul>
+          <a href="#contact" class="slink">Plan your menu →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       ADOPTION SPOTLIGHT
+  ====================================================== -->
+  <section class="adoption" id="adoption">
+    <div class="adp-in">
+      <div>
+        <span class="sec-label adp-label">Adoption Spotlight</span>
+        <h2 class="adp-title">Give a Home,<br>Find a <em>Friend.</em></h2>
+        <p class="adp-text">PetPalace partners with rescue organisations across all 6 kingdoms. Every month we spotlight animals waiting for their forever home. Browse, connect, and make a difference.</p>
+        <a href="#contact" class="btn-p" style="background:var(--dog-p)">
+          Meet Rescue Pets
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="adp-grid">
+        <div class="apet reveal d1"><span class="apet-em">🐕</span><div class="apet-name">Biscuit</div><div class="apet-info">Labrador · 2 yrs · Male</div><span class="apet-tag">Available</span></div>
+        <div class="apet reveal d2"><span class="apet-em">🐈</span><div class="apet-name">Luna</div><div class="apet-info">Tabby · 1 yr · Female</div><span class="apet-tag">Available</span></div>
+        <div class="apet reveal d3"><span class="apet-em">🦜</span><div class="apet-name">Mango</div><div class="apet-info">Macaw · 4 yrs · Male</div><span class="apet-tag">Available</span></div>
+        <div class="apet reveal d4"><span class="apet-em">🦎</span><div class="apet-name">Sandstorm</div><div class="apet-info">Bearded Dragon · 3 yrs</div><span class="apet-tag">Available</span></div>
+        <div class="apet reveal d5"><span class="apet-em">🐸</span><div class="apet-name">Pepper</div><div class="apet-info">Tree Frog · 1 yr · Female</div><span class="apet-tag">Available</span></div>
+        <div class="apet reveal d6"><span class="apet-em">🐠</span><div class="apet-name">Cobalt</div><div class="apet-info">Betta · 6 mo · Male</div><span class="apet-tag">Available</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       BLOG / CARE GUIDES
+  ====================================================== -->
+  <section class="blog" id="blog">
+    <div class="container">
+      <div class="sec-hd reveal">
+        <span class="sec-label">The Kingdom Chronicles</span>
+        <h2 class="sec-title">Care Wisdom for Every Creature.</h2>
+        <p class="sec-sub" style="margin:0 auto">Expert guides by vets and species specialists — because great care starts with great knowledge.</p>
+      </div>
+      <div class="blog-grid">
+
+        <div class="bcard reveal d1">
+          <div class="bimg" style="background:var(--dog-bg)">🐾<span class="btag bd">Dogs</span></div>
+          <div class="bbody">
+            <div class="brt">📖 5 min read</div>
+            <h3 class="btitle">Pack Walks &amp; Mental Enrichment: The Essential Canine Guide</h3>
+            <p class="bexcerpt">Discover how structured pack walks and nose-work activities build confidence and calm in even the most anxious dogs.</p>
+            <div class="bauthor">
+              <div class="bavatar" style="background:var(--dog-p)">DS</div>
+              <div><div class="baname">Dr. Sarah Mitchell</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bcard reveal d2">
+          <div class="bimg" style="background:var(--fish-bg)">🌿<span class="btag bf">Aquatics</span></div>
+          <div class="bbody">
+            <div class="brt">📖 8 min read</div>
+            <h3 class="btitle">Aquascaping 101: Building a Thriving Underwater Habitat</h3>
+            <p class="bexcerpt">From substrate layering to CO₂ balance — everything you need to create a vivid, self-sustaining aquascape your fish will love.</p>
+            <div class="bauthor">
+              <div class="bavatar" style="background:var(--fish-p)">AK</div>
+              <div><div class="baname">Alex Kimura, Aquarist</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bcard reveal d3">
+          <div class="bimg" style="background:var(--bir-bg)">🌟<span class="btag bb">Birds</span></div>
+          <div class="bbody">
+            <div class="brt">📖 6 min read</div>
+            <h3 class="btitle">Foraging for Flight: Enrichment Ideas Your Bird Will Love</h3>
+            <p class="bexcerpt">Recreate natural foraging behaviours at home with simple DIY puzzles that keep your avian companion mentally soaring.</p>
+            <div class="bauthor">
+              <div class="bavatar" style="background:var(--bir-p)">JL</div>
+              <div><div class="baname">Jamie Laurent, Avian Trainer</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       TESTIMONIALS
+  ====================================================== -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="sec-hd reveal">
+        <span class="sec-label">Happy Families</span>
+        <h2 class="sec-title">Every Species, Every Story.</h2>
+      </div>
+    </div>
+
+    <div class="test-track" id="tTrack">
+
+      <div class="tcard">
+        <div class="tstars">★★★★★</div>
+        <p class="tquote">"Finally, a shop that understands that my bearded dragon deserves as much thoughtfulness as someone's labrador. The basking setups here are genuinely museum-quality."</p>
+        <div class="tauthor">
+          <div class="tavatar" style="background:var(--rep-p)">MR</div>
+          <div>
+            <div class="tname">Marcus R.</div>
+            <div class="tpet">🦎 Bearded Dragon parent · <span class="tptag br">Reptile</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard">
+        <div class="tstars">★★★★★</div>
+        <p class="tquote">"I have a tabby named Juniper and a Betta named Indigo. PetPalace has perfect products for both, with care guides that actually make sense. Remarkable."</p>
+        <div class="tauthor">
+          <div class="tavatar" style="background:var(--cat-p)">SP</div>
+          <div>
+            <div class="tname">Sophia P.</div>
+            <div class="tpet">🐈 Cat &amp; 🐠 Fish parent · <span class="tptag bc">Cat</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard">
+        <div class="tstars">★★★★★</div>
+        <p class="tquote">"The Vet Telehealth for my green tree frog was a lifesaver. They connected me with an amphibian specialist in under 20 minutes. This is not a pet shop, it's a palace."</p>
+        <div class="tauthor">
+          <div class="tavatar" style="background:var(--amp-p)">KT</div>
+          <div>
+            <div class="tname">Kenji T.</div>
+            <div class="tpet">🐸 Amphibian parent · <span class="tptag ba">Amphibian</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard">
+        <div class="tstars">★★★★★</div>
+        <p class="tquote">"My two golden retrievers absolutely love their new orthopedic beds. The pack-walk guides in the blog section have genuinely transformed our morning routine."</p>
+        <div class="tauthor">
+          <div class="tavatar" style="background:var(--dog-p)">AJ</div>
+          <div>
+            <div class="tname">Amara J.</div>
+            <div class="tpet">🐕 Dog parent · <span class="tptag bd">Dog</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard">
+        <div class="tstars">★★★★★</div>
+        <p class="tquote">"My African Grey Parrot, Poe, lights up every time I come back from PetPalace. The foraging toys and natural perches are premium quality — and they agree."</p>
+        <div class="tauthor">
+          <div class="tavatar" style="background:var(--bir-p)">EW</div>
+          <div>
+            <div class="tname">Eleanor W.</div>
+            <div class="tpet">🦜 Bird parent · <span class="tptag bb">Bird</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard">
+        <div class="tstars">★★★★★</div>
+        <p class="tquote">"Cobalt, my Betta, has never looked more vibrant since I set up the nano aquascape kit from PetPalace. The aquascaping guide made it easy even for a first-timer."</p>
+        <div class="tauthor">
+          <div class="tavatar" style="background:var(--fish-p)">RL</div>
+          <div>
+            <div class="tname">Riley L.</div>
+            <div class="tpet">🐠 Fish parent · <span class="tptag bf">Fish</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="car-nav">
+      <button class="car-btn" id="tPrev">←</button>
+      <button class="car-btn" id="tNext">→</button>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       NEWSLETTER
+  ====================================================== -->
+  <section class="newsletter" id="contact">
+    <div class="nl-in reveal">
+      <span class="sec-label" style="display:block;text-align:center">Kingdom Chronicles</span>
+      <h2 class="nl-title">Stay in the Know.</h2>
+      <p class="nl-sub">Weekly care tips, product drops, and adoption spotlights — across all 6 kingdoms.</p>
+      <form class="nl-form" onsubmit="handleSub(event)">
+        <input type="email" class="nl-input" placeholder="your@email.com" required aria-label="Email address"/>
+        <button type="submit" class="nl-btn">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       FOOTER
+  ====================================================== -->
+  <footer class="footer">
+    <div class="foot-in">
+      <div class="foot-top">
+        <div>
+          <div class="foot-logo">PetPalace</div>
+          <p class="foot-tag">Curated Care for Every Kingdom. Because every creature — from the smallest tree frog to the most majestic mastiff — deserves to live their best life.</p>
+          <div class="socials">
+            <div class="sbtn" title="Instagram">📸</div>
+            <div class="sbtn" title="TikTok">🎵</div>
+            <div class="sbtn" title="Pinterest">📌</div>
+            <div class="sbtn" title="YouTube">▶️</div>
+          </div>
+        </div>
+
+        <div class="foot-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="#categories">Dogs &amp; Canines</a></li>
+            <li><a href="#categories">Cats &amp; Felines</a></li>
+            <li><a href="#categories">Fish &amp; Aquatics</a></li>
+            <li><a href="#categories">Reptiles</a></li>
+            <li><a href="#categories">Amphibians</a></li>
+            <li><a href="#categories">Birds &amp; Avians</a></li>
+          </ul>
+        </div>
+
+        <div class="foot-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#services">Palace Grooming</a></li>
+            <li><a href="#services">Vet Telehealth</a></li>
+            <li><a href="#services">Nutrition Consult</a></li>
+            <li><a href="#adoption">Adoption Spotlight</a></li>
+            <li><a href="#blog">Care Guides</a></li>
+          </ul>
+        </div>
+
+        <div class="foot-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About PetPalace</a></li>
+            <li><a href="#">Our Specialists</a></li>
+            <li><a href="#">Sustainability</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="foot-bot">
+        <span class="foot-copy">© 2026 PetPalace. All rights reserved. "Curated Care for Every Kingdom."</span>
+        <div class="class-dots">
+          <div class="cdot" style="background:var(--dog-p)" title="Canines"></div>
+          <div class="cdot" style="background:var(--cat-p)" title="Felines"></div>
+          <div class="cdot" style="background:var(--fish-p)" title="Aquatics"></div>
+          <div class="cdot" style="background:var(--rep-p)" title="Reptiles"></div>
+          <div class="cdot" style="background:var(--amp-p)" title="Amphibians"></div>
+          <div class="cdot" style="background:var(--bir-p)" title="Avians"></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!--
+    BUILD REPORT — PetPalace v1.0
+    ════════════════════════════════════════════════
+    60 placeholder image slots pre-mapped to class palettes:
+      dog-01…10   → Terracotta #C96A3D / Navy #1A2744
+      cat-01…10   → Lavender #9B8CC8  / Sage #7A9E7E
+      fish-01…10  → Teal #1B7B8A      / Coral #FF7B5E
+      rep-01…10   → Ochre #C8901A     / Terracotta #B85C38
+      amp-01…10   → Lime #5FA823      / Brown #7A5C30
+      bir-01…10   → Sky #4CA3D4       / Yellow #F0C030
+    Replace emoji with <img src="/assets/[class]-[n].png"> when ready.
+    ════════════════════════════════════════════════
+  -->
+
+  <script>
+    /* ── Nav scroll effect ─────────────────────────────── */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+
+    /* ── Mobile menu ──────────────────────────────────── */
+    document.getElementById('burger').addEventListener('click', () => {
+      document.getElementById('mMenu').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+    document.getElementById('mClose').addEventListener('click', closeMobile);
+    function closeMobile() {
+      document.getElementById('mMenu').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* ── Scroll reveal (IntersectionObserver) ─────────── */
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.10, rootMargin: '0px 0px -36px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    /* Category cards: staggered spring pop */
+    document.querySelectorAll('.ccard').forEach((c, i) => {
+      c.style.transitionDelay = `${i * 0.10}s`;
+      io.observe(c);
+    });
+
+    /* ── Product hover: class-tinted shadow ───────────── */
+    const shadowMap = { bd: 'rgba(201,106,61,.28)', bc: 'rgba(155,140,200,.28)', bf: 'rgba(27,123,138,.28)', br: 'rgba(200,144,26,.28)', ba: 'rgba(95,168,35,.28)', bb: 'rgba(76,163,212,.28)' };
+    document.querySelectorAll('.pcard').forEach(card => {
+      const badge = card.querySelector('.pbadge');
+      if (!badge) return;
+      const cls = [...badge.classList].find(c => shadowMap[c]);
+      card.addEventListener('mouseenter', () => { card.style.boxShadow = `0 18px 44px ${shadowMap[cls] || 'rgba(0,0,0,.12)'}`; });
+      card.addEventListener('mouseleave', () => { card.style.boxShadow = ''; });
+    });
+
+    /* ── Add-to-cart feedback ─────────────────────────── */
+    document.querySelectorAll('.padd').forEach(btn => {
+      btn.addEventListener('click', function () {
+        this.textContent = '✓';
+        this.style.background = 'var(--amp-p)';
+        this.style.transform   = 'scale(1.2)';
+        setTimeout(() => { this.textContent = '+'; this.style.background = ''; this.style.transform = ''; }, 1600);
+      });
+    });
+
+    /* ── Carousels ────────────────────────────────────── */
+    function carousel(trackId, prevId, nextId, step) {
+      const t = document.getElementById(trackId);
+      document.getElementById(nextId).onclick = () => t.scrollBy({ left:  step, behavior:'smooth' });
+      document.getElementById(prevId).onclick = () => t.scrollBy({ left: -step, behavior:'smooth' });
+    }
+    carousel('pCarousel', 'pPrev', 'pNext', 290);
+    carousel('tTrack',    'tPrev', 'tNext', 374);
+
+    /* ── Smooth anchor links ──────────────────────────── */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+
+    /* ── Counter animation (stats) ───────────────────── */
+    function countUp(el, end, suffix, dur) {
+      const start = performance.now();
+      (function tick(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const v = Math.round(end * (1 - Math.pow(1 - p, 3)));
+        el.textContent = v.toLocaleString() + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      })(start);
+    }
+    const statsEl = document.querySelector('.stats');
+    let counted = false;
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !counted) {
+        counted = true;
+        countUp(document.getElementById('s0'), 6, '', 900);
+        countUp(document.getElementById('s1'), 2400, '+', 1100);
+        countUp(document.getElementById('s2'), 50, 'K+', 1300);
+      }
+    }, { threshold: .5 }).observe(statsEl);
+
+    /* ── Newsletter ───────────────────────────────────── */
+    function handleSub(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.textContent = '✓ You\'re in!';
+      btn.style.background = 'var(--amp-p)';
+      setTimeout(() => { btn.textContent = 'Subscribe'; btn.style.background = ''; e.target.reset(); }, 3000);
+    }
+  </script>
+</body>
+</html>
