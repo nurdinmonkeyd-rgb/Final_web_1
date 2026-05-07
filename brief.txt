@@ -1,0 +1,173 @@
+==============================================================
+SITE: PetPalace — All Creatures Great & Small
+==============================================================
+
+ROLE / CONTEXT
+--------------
+Role: Lead Designer & Brand Strategist for a premium pet supply and care brand.
+Context: We are launching "PetPalace," an online emporium that caters to ALL domestic pets,
+not just cats and dogs. Our unique selling point is "Class-Specific Curation" —
+every type of animal gets its own distinct visual identity, tailored accessories,
+and care guides. The website must feel like walking into a beautiful, modern boutique
+where every section is thoughtfully designed for its specific resident.
+
+PURPOSE
+-------
+An e-commerce and informational hub for pet owners. Users can shop accessories,
+book grooming/health consultations, and read care guides. The site must visually
+and structurally differentiate between animal classes:
+1. Dogs (Canines)
+2. Cats (Felines)
+3. Fish (Aquatics)
+4. Reptiles (Herpetology)
+5. Amphibians (Herpetology - distinct visual split)
+6. Birds (Avians)
+
+
+==============================================================
+STEP 2 — BRAND VOICE (for `brand` skill)
+==============================================================
+Voice archetype: The Informed Curator — Knowledgeable, warm, and inclusive.
+Speaks with authority on pet care but never talks down. Celebrates the quirks
+of every creature.
+
+Tone dimensions:
+- Formal ↔ Casual: 3 (Conversational Professional)
+- Serious ↔ Playful: 4 (Warm and inviting)
+- Reserved ↔ Expressive: 4 (Enthusiastic about pets)
+
+Voice rules:
+- NEVER refer to pets as "it." Use "they" or specific species.
+- Mention "habitats" instead of "cages" or "tanks" for non-mammals.
+- For dogs: energetic, loyal, "pack walks." For cats: curious, serene, "window perches."
+
+Tagline: "Curated Care for Every Kingdom."
+Key Phrases: "Beyond Cats & Dogs," "Find Your Flock," "Scale & Tail Care."
+
+
+==============================================================
+STEP 3 — DESIGN SYSTEM (for `ui-ux-pro-max` + `design-system`)
+==============================================================
+Style keywords: Modern Boutique, Soft Minimalism, Organized, Color-Coded, Airy.
+Preferred style direction: Clean, card-based layout. White space is crucial.
+Subtle use of soft shadows (Soft Claymorphism or Neumorphism light).
+
+GLOBAL COLOR SYSTEM (Base):
+- Surface-base: Clean White (#FFFFFF) or Soft Cream (#F9F9F9)
+- Surface-raised: Pure White (#FFFFFF) with light border
+- Ink: Dark Charcoal (#2C2C2C) for readability
+- Global Accent: Warm Sand or Greige (used for neutral buttons, footer)
+
+CLASS-SPECIFIC COLOR PALETTES (Used for Hero banners, category cards, and badges):
+- Dogs (Canines): Warm Terracotta & Deep Navy. (Reliable, strong, energetic).
+- Cats (Felines): Soft Lavender & Sage Green. (Serene, playful, regal).
+- Fish (Aquatics): Deep Teal & Coral Pop. (Fluid, vibrant, underwater).
+- Reptiles: Sunbaked Ochre & Terracotta. (Arid, ancient, textural).
+- Amphibians: Fresh Lime Green & Pond Brown. (Vivacious, damp, bright).
+- Birds: Sky Blue & Soft Sunshine Yellow. (Airy, light, chirpy).
+
+TYPOGRAPHY:
+- Display: "Playfair Display" (Elegant, premium feel for headers).
+- Body: "Nunito Sans" or "Inter" (Highly readable, friendly, modern).
+- Type scale: 1.200 (Major Second).
+
+SPACING & RADII:
+- Container max-width: 1400px (to allow wider product grids).
+- Card Radius: 24px (lg).
+- Button Radius: Pill (9999px).
+
+
+==============================================================
+STEP 4 — REFERENCE SCRAPE (for Firecrawl) [OPTIONAL]
+==============================================================
+Reference URL: https://www.chewy.com (Scrape layout density and category filtering logic)
+Avoid: Copying their exact branding. We want more boutique, less warehouse.
+
+
+==============================================================
+STEP 5 — SECTIONS & LAYOUT (for Stitch)
+==============================================================
+Section order and goal:
+
+1. Hero — Full-width dynamic banner. Should rotate or feature the 6 animal classes subtly.
+   Headline: "Curated Care for Every Kingdom." CTA: "Shop by Pet Type".
+2. Category Hub (The 6 Kingdoms) — 6 interactive cards. Each card uses its specific
+   Class Color Palette. Card shows Icon + Name (Dogs, Cats, Fish, Reptiles, Amphibians, Birds).
+3. Featured Products — Carousel of best-sellers. Badges on products must match the
+   Class Color of the animal they belong to.
+4. The "Pet Care" Service Menu — 3 cards (Grooming, Vet Telehealth, Nutrition Consult).
+5. Adoption Spotlight — A dedicated section for rescue animals (placeholder images).
+6. Blog / Care Guides — 3 cards with tips for different classes.
+7. Testimonials — Quotes from happy owners of all pet types.
+8. Footer — Standard links, newsletter signup.
+
+
+==============================================================
+STEP 6 — IMAGERY (for Nano Banana 2, with fallback tiers)
+==============================================================
+Global art direction: High-quality product photography style. Clean, diffused studio lighting.
+No humans needed unless it's a hand gently interacting with an animal.
+Consistent composition across all 60 images.
+
+CRITICAL REQUIREMENT: Generate EXACTLY 10 images per class. Total 60 images.
+Naming convention: `[class]-[number].png` (e.g., `dog-1.png`, `cat-7.png`).
+
+Per-class prompts (Generate 10 variations of each concept):
+- Dogs: "Happy healthy dog wearing a stylish modern collar, sitting on a soft beige bed, studio lighting, terracotta accent color in background."
+- Cats: "Elegant fluffy cat playing with a feather wand toy, soft lavender background, sage green cushion, serene expression."
+- Fish: "Vibrant Betta fish swimming in a beautifully aquascaped nano tank, deep teal water, coral decorations, crisp focus."
+- Reptiles: "Bearded dragon basking under a warm lamp on a textured ochre rock, arid vibe, clean terrarium setup."
+- Amphibians: "Bright green tree frog perched on a bromeliad leaf, humid vibe, droplets of water, vibrant lime green accents."
+- Birds: "Colorful Budgie perched on a natural wooden swing, soft sky blue backdrop, gentle sunlight, feathers detailed."
+
+Fallback: If quota exceeded, use high-quality Unsplash placeholders matching the specific prompt.
+
+
+==============================================================
+STEP 7 — BRAND ASSETS (for `design` skill)
+==============================================================
+LOGO brief:
+- Concept: A minimalist geometric mark that incorporates six interlocking shapes (circles/polygons)
+  representing the 6 classes, arranged in a harmonious circular "palace" shape.
+- Wordmark: "PetPalace" in Playfair Display.
+- Variants: Primary (icon + text), Icon only (for favicon), Monochrome.
+
+ICON SET (SVG, custom for 6 classes):
+- Dog: Shield/Star
+- Cat: Moon/Eye
+- Fish: Water/Wave
+- Reptile: Sun/Scales
+- Amphibian: Leaf/Droplet
+- Bird: Feather/Wing
+
+
+==============================================================
+STEP 8 — INTERACTIVE COMPONENTS (for `ui-styling` / shadcn)
+==============================================================
+Required shadcn/ui primitives:
+- Tabs (for switching between classes on mobile)
+- Carousel (Featured Products, Testimonials)
+- Card (Product cards, Service cards, Blog cards)
+- Badge (Indicating "Dog", "Cat", "Reptile" etc. - **Must use Class-Specific Colors**)
+- Accordion (FAQ)
+- Dialog (Quick View for products)
+- Hover Card (Care tips)
+
+Interaction states: Ensure badges pull from the 6 distinct palettes.
+Focus-visible: 2px ring matching the specific Class Color.
+
+
+==============================================================
+STEP 9 — ASSEMBLE & ANIMATE (final index.html)
+==============================================================
+RESPONSIVE BREAKPOINTS: Mobile-first. The Category Hub (6 cards) must collapse to a horizontal
+scroll on mobile.
+
+ANIMATION ON ASSEMBLY:
+- Hero: Gentle fade-in.
+- Category Cards: Staggered reveal with a "pop" (scale 0.95 to 1.0) using Framer Motion.
+- Hover: Products lift slightly, showing a shadow tinted with the animal's Class Color.
+
+BUILD REPORT:
+Include a note that the site is pre-loaded with 60 placeholder slots, perfectly mapped
+to the 6 class-specific color palettes as defined in Step 3.
